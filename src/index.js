@@ -3,18 +3,18 @@ const getUsers = require("./modules/users");
 const { URL } = require("url");
 
 const server = http.createServer((request, response) => {
-  const url = new URL(request.url, "http://127.0.0.1:3003");
+  const ipAddress = "http://127.0.0.1";
+  const url = new URL(request.url, ipAddress);
   const helloValue = url.searchParams.get("hello");
 
-  if (request.url === `/hello=Ivan`) {
+  if (helloValue) {
     response.status = 200;
     response.statusMessage = "Ok";
-    response.header = "Content-Type: aplication/json";
+    response.header = "Content-Type: text/plain";
     response.write(`hello, ${helloValue}`);
     response.end();
   }
 
-  
   if (request.url === "/users") {
     response.status = 200;
     response.statusMessage = "Ok";
@@ -22,6 +22,15 @@ const server = http.createServer((request, response) => {
     response.write(getUsers());
     response.end();
 
+    return;
+  }
+
+  if (request.url === "/?hello") {
+    response.statusCode = 400;
+    response.statusMessage = "Bad Request";
+    response.setHeader("Content-Type", "text/plain");
+    response.write(`Enter a name`);
+    response.end();
     return;
   }
 
