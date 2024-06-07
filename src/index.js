@@ -15,6 +15,7 @@ const {
  } = process.env;
 
 mongoose.connect(MONGO_URL)
+
 const app = express();
 
 const helloWorld = (request, response) => {
